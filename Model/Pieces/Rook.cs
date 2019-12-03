@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Model.Pieces
 {
-    public class Rook : Piece
+    public class Rook : BasePiece
     {
 
         private static Vector[] DirectionsForward = new Vector[] {
@@ -51,10 +50,10 @@ namespace Model.Pieces
 
 		protected override char Char => '♖';
 
-		public override Piece[][,] GetMoves(Piece[,] board)
+		public override BasePiece[][,] GetMoves(BasePiece[,] board)
         {
             //New list to store potential moves
-            var boards = new List<Piece[,]>();
+            var boards = new List<BasePiece[,]>();
 
             foreach (var directions in new [] { DirectionsForward, DirectionsBack, DirectionsLeft, DirectionsRight })
             {
@@ -65,14 +64,12 @@ namespace Model.Pieces
                     {
                         if (board[landed.X, landed.Y] == null)
                         {
-                            CloneBoardAndCheckCheck<Rook>(board, landed, out var newBoard);
-							boards.Add(newBoard);
+							boards.Add(CloneBoardAndMove<Rook>(board, landed));
 						}
                         //if there's a piece to capture add the move then break
                         else if (board[landed.X, landed.Y].Color != Color)
                         {
-                            CloneBoardAndCheckCheck<Rook>(board, landed, out var newBoard);
-							boards.Add(newBoard);
+							boards.Add(CloneBoardAndMove<Rook>(board, landed));
 							break;
                         }
                         //if we get here it there is a piece of the same color so no more moves get added

@@ -2,14 +2,14 @@
 
 namespace Model
 {
-	public class DumbPlayer
+	public class BasePlayer
 	{
 		private static readonly Random R = new Random();
 
 		public string Name;
 		public Color Color;
 
-		virtual public int ChooseMove(Piece[][,] options)
+		virtual public int ChooseMove(BasePiece[][,] options)
 		{
 			int bestIndex = 0;
 			double bestScore = ScoreMove(options[0]);
@@ -27,7 +27,7 @@ namespace Model
 			return bestIndex;
 		}
 
-		virtual protected double ScoreMove(Piece[,] options)
+		virtual protected double ScoreMove(BasePiece[,] options)
 		{
 			return R.NextDouble() - .5;
 		}

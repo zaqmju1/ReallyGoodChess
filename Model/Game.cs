@@ -6,10 +6,10 @@ namespace Model
 {
 	public class Game
 	{
-		public Stack<Piece[,]> History = new Stack<Piece[,]>();
-		public Queue<DumbPlayer> Players = new Queue<DumbPlayer>();
-		public Piece[,] CurrentBoard => History.Peek();
-		public Piece[,] PreviousBoard()
+		public Stack<BasePiece[,]> History = new Stack<BasePiece[,]>();
+		public Queue<BasePlayer> Players = new Queue<BasePlayer>();
+		public BasePiece[,] CurrentBoard => History.Peek();
+		public BasePiece[,] PreviousBoard()
 		{
 			if (History.Count < 2) return null;
 			var current = History.Pop();
@@ -27,16 +27,16 @@ namespace Model
 		}
 
 		public Color Turn => Players.Peek().Color;
-		private DumbPlayer GetNextPlayer()
+		private BasePlayer GetNextPlayer()
 		{
 			var nextPlayer = Players.Dequeue();
 			Players.Enqueue(nextPlayer);
 			return nextPlayer;
 		}
 
-		private Piece[][,] GetMoves()
+		private BasePiece[][,] GetMoves()
 		{
-			List<Piece[,]> options = new List<Piece[,]>();
+			List<BasePiece[,]> options = new List<BasePiece[,]>();
 			var currentBoard = History.Peek();
 
 			foreach (var piece in currentBoard)
@@ -56,7 +56,7 @@ namespace Model
 		{
 			if (History.Count > 2000) return .5;
 
-			foreach (Piece p in CurrentBoard)
+			foreach (BasePiece p in CurrentBoard)
 			{
 				if (p?.Color == Turn) return null;
 			}

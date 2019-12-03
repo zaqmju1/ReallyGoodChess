@@ -9,7 +9,7 @@ namespace ChessConsoleApp
     {
         public static Game SetUp()
         {
-			var board = new Piece[8, 8];
+			var board = new BasePiece[8, 8];
 			board[0, 1] = new Knight() { Color = Color.White, Location = new Vector(0, 1) };
             board[0, 6] = new Knight() { Color = Color.White, Location = new Vector(0, 6) };
             board[7, 1] = new Knight() { Color = Color.Black, Location = new Vector(7, 1) };
@@ -38,8 +38,8 @@ namespace ChessConsoleApp
 
 			Game Game = new Game();
 			Game.History.Push(board);
-			Game.Players.Enqueue(new DumbPlayer() { Name = "player1", Color = Color.White });
-			Game.Players.Enqueue(new DumbPlayer() { Name = "player2", Color = Color.Black });
+			Game.Players.Enqueue(new BasePlayer() { Name = "player1", Color = Color.White });
+			Game.Players.Enqueue(new BasePlayer() { Name = "player2", Color = Color.Black });
 
 			return Game;
         }

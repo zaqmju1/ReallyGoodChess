@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Model.Pieces
 {
-    public class King : Piece
+    public class King : BasePiece
     {
 		protected override char Char => '♔';
 
@@ -19,9 +18,9 @@ namespace Model.Pieces
             new Vector(1, 1)   //top right diag
         };
 
-        public override Piece[][,] GetMoves(Piece[,] board)
+        public override BasePiece[][,] GetMoves(BasePiece[,] board)
         {
-            var boards = new List<Piece[,]>();
+            var boards = new List<BasePiece[,]>();
 
             foreach (Vector v in Directions)  //valid moves: 1 square vertical,horizontal, or diagonal
             {
@@ -29,15 +28,12 @@ namespace Model.Pieces
                 if (IsOnBoard(landed)
                     && board[landed.X, landed.Y]?.Color != Color)
                 {
-                    if (CloneBoardAndCheckCheck<King>(board, landed, out var newBoard))
-                    {
-                        boards.Add(newBoard);
-                    }
+                    boards.Add(CloneBoardAndMove<King>(board, landed));
                 }
             }
 
-            //castling
-            if (!HasMoved && !AmInCheck(board)) //king hasn't moved nor is he in check (cant castle out of check)
+            //castling (THIS SECTION NEEDS WORK)
+            if (!HasMoved) //king hasn't moved nor is he in check (cant castle out of check)
             {
                 Vector leftRook = new Vector(0, Location.Y);
                 if (board[leftRook.X, leftRook.Y]?.HasMoved == false) //left rook on King's team has not moved
@@ -64,7 +60,7 @@ namespace Model.Pieces
         }
 
 
-        private bool NothingInBetweenLeft(Piece[,] board)
+        private bool NothingInBetweenLeft(BasePiece[,] board)
         {
             for (int i = 1; i < Location.X; i++)
             {
@@ -77,7 +73,7 @@ namespace Model.Pieces
         }
 
 
-        private bool NothingInBetweenRight(Piece[,] board)
+        private bool NothingInBetweenRight(BasePiece[,] board)
         {
             for (int i = Location.X + 1; i < 7; i++)
             {

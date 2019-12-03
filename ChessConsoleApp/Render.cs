@@ -5,7 +5,7 @@ namespace ChessConsoleApp
 {
 	public static class Render
 	{
-		public static void ToConsole(this Piece[,] board, Piece[,] lastBoard = null)
+		public static void ToConsole(this BasePiece[,] board, BasePiece[,] lastBoard = null)
 		{
 			for (int x = 0; x < 8; x++)
 			{

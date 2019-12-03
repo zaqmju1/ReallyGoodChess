@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Model.Pieces
 {
-	public class Knight : Piece // Aka Horsey, can jump, captures where it lands
+	public class Knight : BasePiece // Aka Horsey, can jump, captures where it lands
 	{
 		protected override char Char => '♘';
 
@@ -19,10 +18,10 @@ namespace Model.Pieces
 			new Vector(1, -2)
 		};
 
-		public override Piece[][,] GetMoves(Piece[,] board)
+		public override BasePiece[][,] GetMoves(BasePiece[,] board)
 		{
 			// make an array size 8
-			var boards = new List<Piece[,]>();
+			var boards = new List<BasePiece[,]>();
 
 			// add things to it
 			foreach (var direction in Directions)
@@ -31,10 +30,7 @@ namespace Model.Pieces
 
 				if (IsOnBoard(landed)
 					&& board[landed.X, landed.Y]?.Color != Color) {
-					if (CloneBoardAndCheckCheck<Knight>(board, landed, out var newBoard))
-					{
-						boards.Add(newBoard);
-					}
+					boards.Add(CloneBoardAndMove<Knight>(board, landed));
 				}
 			}
 

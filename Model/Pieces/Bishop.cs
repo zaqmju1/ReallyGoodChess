@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Model.Pieces
 {
-    public class Bishop : Piece
+    public class Bishop : BasePiece
     {
         private Vector[] directions = { new Vector(1, 1),
             new Vector(-1, 1),
@@ -14,9 +13,9 @@ namespace Model.Pieces
 
         protected override char Char => '♗';
 
-        public override Piece[][,] GetMoves(Piece[,] board)
+        public override BasePiece[][,] GetMoves(BasePiece[,] board)
         {
-            var boards = new List<Piece[,]>();
+            var boards = new List<BasePiece[,]>();
 
 			Action<Vector> continueDirection = d =>
 			{
@@ -25,10 +24,7 @@ namespace Model.Pieces
 				while (IsOnBoard(looking) && board[looking.X, looking.Y]?.Color != Color && !captured)
 				{
 					captured = board[looking.X, looking.Y] != null;
-					if (CloneBoardAndCheckCheck<Bishop>(board, looking, out var newBoard))
-					{
-						boards.Add(newBoard);
-					}
+					boards.Add(CloneBoardAndMove<Bishop>(board, looking));
                     looking += d;
 				}
 			};
