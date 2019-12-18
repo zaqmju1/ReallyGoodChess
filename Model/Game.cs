@@ -18,12 +18,17 @@ namespace Model
 			return previous;
 		}
 
-		public void TakeATurn()
+		public double? TakeATurn()
 		{
 			var moves = GetMoves();
 			var player = GetNextPlayer();
-			int moveIndex = player.ChooseMove(moves);
+			if (moves.Length == 0)
+			{
+				return FinalBoardCheck();
+			}
+			int moveIndex = player.ChooseMove(CurrentBoard, moves);
 			History.Push(moves[moveIndex]);
+			return null;
 		}
 
 		public Color Turn => Players.Peek().Color;
@@ -62,6 +67,36 @@ namespace Model
 			}
 
 			return (int)Turn;
+		}
+
+		public double FinalBoardCheck()
+		{
+			int blackCount = 0;
+			int whiteCount = 0;
+			foreach (BasePiece p in CurrentBoard)
+			{
+				if (p != null)
+				{
+					if (p.Color == Color.White)
+					{
+						whiteCount += 1;
+					} else
+					{
+						blackCount += 1;
+					}
+				}
+			}
+
+			if (blackCount > whiteCount)
+			{
+				return 0;
+			}
+			else if (whiteCount > blackCount)
+			{
+				return 1;
+			}
+
+			return .5;
 		}
 	}
 }

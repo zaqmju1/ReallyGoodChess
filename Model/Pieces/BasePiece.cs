@@ -39,5 +39,19 @@ namespace Model
 				new T() { Color = Color, HasMoved = true, Location = landingSpot };
 			return newBoard;
 		}
+
+		protected BasePiece[,] CloneBoardAndJump<T>(BasePiece[,] board, Vector jumpedSpot, Vector landingSpot)
+			where T : BasePiece, new()
+		{
+			var newBoard = Clone(board);
+			//remove from where it was
+			newBoard[Location.X, Location.Y] = null;
+			//remove jumpedPiece
+			newBoard[jumpedSpot.X, jumpedSpot.Y] = null;
+			//put in new place
+			newBoard[landingSpot.X, landingSpot.Y] =
+				new T() { Color = Color, HasMoved = true, Location = landingSpot };
+			return newBoard;
+		}
 	}
 }
